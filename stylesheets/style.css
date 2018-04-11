@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body {
+  padding: 50px;
+  font-family: 'Roboto', sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.addedActionText {
+    width: 600px;
+}
+
+.addedActionText:hover {
+    background-color: azure;
+    cursor: all-scroll;
+    width: 600px;
+}
+
+i:hover {
+    cursor: pointer;
+    color: #c00;
+}
+
+i {
+    padding-right: 20%;
+}
+
+.actionButton {
+    width: 100%;
+    border: solid 3px white;
+    background-color: navy;
+    color: white;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+.addActionButton, input[type=submit] {
+    color:navy;
+    background-color: white;
+    border: solid 3px navy;
+    width: 186px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+.actionButton, .addActionButton, input[type=submit] {
+    box-shadow: 2px 2px lightgrey;
+}
+
+.actionButton:active {
+    background-color: cornflowerblue;
+}
+
+.addActionButton:active, input[type=submit]:active {
+    color: cornflowerblue;
+    border-color: cornflowerblue;
+}
+
+.sentenceContainer {
+    height: inherit;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.videoDiv {
+    display:flex;
+}
