@@ -145,6 +145,7 @@ function addAction() {
 function submitActions() {
     var participantIDfield = document.getElementsByClassName("participantIDfield")[0];
     var participantIDfieldValue = participantIDfield.value;
+    //TODO: Check if number
     if (participantIDfieldValue == "Participant ID" || participantIDfieldValue == "") {
         alert("Please enter a participant ID before submitting.");
         return;
@@ -157,7 +158,7 @@ function submitActions() {
         }   
     }
     console.log(listText);
-        var textFile = null,
+    var textFile = null,
     makeTextFile = function (text) {
     var data = new Blob([text], {type: 'text/plain'});
 
