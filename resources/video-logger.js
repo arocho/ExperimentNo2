@@ -21,6 +21,7 @@ function keepTime() {
         console.log(inSeconds);
         var actionText = logData[currentTimestamp];
         var listElement = document.createElement("li");
+        listElement.className = "timestamp";
         listElement.innerHTML = currentTimestamp + " - " +actionText;
         unorderedListElement.appendChild(listElement);
         timestampIndex++;
@@ -28,7 +29,6 @@ function keepTime() {
 }
 
 function convertTimestampToSeconds(timestamp) {
-    //4:32
     var timeArray = timestamp.split(":");
     var seconds = parseInt(timeArray[1]) + parseInt(timeArray[0] * 60);
     return seconds;
