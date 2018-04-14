@@ -34,6 +34,10 @@ i {
     padding-right: 20%;
 }
 
+.addActionButton {
+    width: 186px;
+}
+
 .actionButton {
     width: 100%;
     border: solid 3px white;
@@ -47,7 +51,6 @@ i {
     color:navy;
     background-color: white;
     border: solid 3px navy;
-    width: 186px;
     font-weight: bold;
     border-radius: 3px;
 }

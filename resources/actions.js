@@ -142,37 +142,51 @@ function addAction() {
     }        
 }
 
+//Concatenate predicted actions, 
+//store on local storage, 
+//then insert into one downloadable file 
+//after completing the last video's predictions
+//Loads next video, and disables the button (until video end)
 function submitActions() {
-    var participantIDfield = document.getElementsByClassName("participantIDfield")[0];
-    var participantIDfieldValue = participantIDfield.value;
-    //TODO: Check if number
-    if (participantIDfieldValue == "Participant ID" || participantIDfieldValue == "") {
-        alert("Please enter a participant ID before submitting.");
-        return;
-    }
-    var listData = document.getElementsByClassName("addedActionText");
-    var listText= "";
-    if (listData) {
-        for (var i = 0; i < listData.length; i++) {
-            listText += listData[i].firstChild.data + ", ";
-        }   
-    }
-    console.log(listText);
-    var textFile = null,
-    makeTextFile = function (text) {
-    var data = new Blob([text], {type: 'text/plain'});
+    if (confirm("Submit list of actions and go to next video?")) {
+        var participantIDfield = document.getElementsByClassName("participantIDfield")[0];
+        var participantIDfieldValue = participantIDfield.value;
+        //TODO: Check if number
+        if (participantIDfieldValue == "Participant ID" || participantIDfieldValue == "" 
+            && videoLengths.length == 0) {
+            alert("Please enter a participant ID before submitting.");
+            return;
+        }
+        var listData = document.getElementsByClassName("addedActionText");
+        var listText= "";
+        if (listData) {
+            for (var i = 0; i < listData.length; i++) {
+                listText += listData[i].firstChild.data + ", ";
+            }   
+        }
+        console.log(listText);
+        
+        loadNextVideo(videoIds, videoLengths);
 
-    // If we are replacing a previously generated file we need to
-    // manually revoke the object URL to avoid memory leaks.
-    if (textFile !== null) {
-      window.URL.revokeObjectURL(textFile);
+        if(videoLengths.length == 0) {
+            //Should happen only after 5th video
+            var textFile = null,
+            makeTextFile = function (text) {
+            var data = new Blob([text], {type: 'text/plain'});
+
+            // If we are replacing a previously generated file we need to
+            // manually revoke the object URL to avoid memory leaks.
+            if (textFile !== null) {
+              window.URL.revokeObjectURL(textFile);
+            }
+            textFile = window.URL.createObjectURL(data);
+            return textFile;
+            };
+
+            var link = document.getElementById('downloadLink');
+            link.setAttribute("download", participantIDfieldValue + ".txt");
+            link.href = makeTextFile(listText);
+            link.style.display = 'block';
+        }
     }
-    textFile = window.URL.createObjectURL(data);
-    return textFile;
-    };
-    
-    var link = document.getElementById('downloadLink');
-    link.setAttribute("download", participantIDfieldValue + ".txt");
-    link.href = makeTextFile(listText);
-    link.style.display = 'block';
 }

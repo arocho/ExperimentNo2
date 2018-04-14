@@ -6,7 +6,6 @@ var player = videojs("player", {
 
 var logData = JSON.parse(logs);
 var timestamps = Object.keys(logData);
-console.log(timestamps);
 var timestampIndex = 0;
 
 var unorderedListElement = document.getElementsByClassName("logList")[0];
@@ -16,9 +15,7 @@ player.on("timeupdate", keepTime);
 function keepTime() {
     var currentTimestamp = timestamps[timestampIndex];
     var inSeconds = convertTimestampToSeconds(currentTimestamp);
-    console.log(inSeconds);
     if(player.currentTime() > inSeconds) {
-        console.log(inSeconds);
         var actionText = logData[currentTimestamp];
         var listElement = document.createElement("li");
         listElement.className = "timestamp";
