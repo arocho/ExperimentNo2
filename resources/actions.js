@@ -26,6 +26,7 @@ function findParameters(action) {
 function constructSelect(listOfGameObjects) {
     var sentenceSelect = document.createElement("select");
     sentenceSelect.className = "listOfGameObjects";
+    sentenceSelect.setAttribute("id", "listOfGameObjects");
     sentenceSelect.add(defaultOption);
     for (var i = 0; i < listOfGameObjects.length; i++) {
         var option = document.createElement("option");
@@ -154,9 +155,10 @@ function addAction() {
 //after completing the last video's predictions
 //Loads next video, and disables the button (until video end)
 function submitActions() {
-    var listData = document.getElementsByClassName("addedActionText");
-    if(!listData) {
+    var addedActionsList = document.getElementsByClassName("addedActionsList")[0];
+    if(addedActionsList.childElementCount == 0) {
         alert("Please add an action");
+        return;
     }
     
     if(loadedAllVideos && confirm("Submit and Finish?")) {
