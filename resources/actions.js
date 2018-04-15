@@ -1,6 +1,7 @@
 var mydata;
 var listOfActions;
 var listOfEntityTypes = [];
+var listText= "";
 
 var defaultOption = document.createElement("option");
 defaultOption.text = "select entity";
@@ -148,34 +149,34 @@ function addAction() {
 //after completing the last video's predictions
 //Loads next video, and disables the button (until video end)
 function submitActions() {
-    if (confirm("Submit list of actions and go to next video?")) {
+    var listData = document.getElementsByClassName("addedActionText");
+    if(!listData) {
+        alert("Please add an action");
+    }
+    
+    if(loadedAllVideos && confirm("Submit and Finish?")) {
         var participantIDfield = document.getElementsByClassName("participantIDfield")[0];
         var participantIDfieldValue = participantIDfield.value;
-        //TODO: Check if number
-        if (participantIDfieldValue == "Participant ID" || participantIDfieldValue == "" 
-            && videoLengths.length == 0) {
+        if (participantIDfieldValue == "Participant ID" || participantIDfieldValue == "") {
             alert("Please enter a participant ID before submitting.");
             return;
         }
-        var listData = document.getElementsByClassName("addedActionText")[0];
-        var listText= "";
-        if (listData) {
-            for (var i = 0; i < listData.length; i++) {
-                listText += listData[i].firstChild.data + ", ";
-            }   
-        }
         
-        while(listData.firstChild) {
-            listData.removeChild(listData.firstChild);
-        }
-        
-        loadNextVideo(videoIds, videoLengths);
+        listText += videoIdAndLength[0] + ", " + videoIdAndLength[1] + ", ";
 
-        if(videoLengths.length == 0) {
-            //Should happen only after 5th video
-            var textFile = null,
-            makeTextFile = function (text) {
-            var data = new Blob([text], {type: 'text/plain'});
+            if (listData) {
+                for (var i = 0; i < listData.length; i++) {
+                    listText += listData[i].firstChild.data;
+                    if(i != (listData.length-1))
+                        listText += ", ";
+                }
+                listText += "\n";
+            }
+             
+        //Should happen only after 5th video
+        var textFile = null,
+        makeTextFile = function (text) {
+            var data = new Blob([text], {type: 'text/plain', endings: 'native'});
 
             // If we are replacing a previously generated file we need to
             // manually revoke the object URL to avoid memory leaks.
@@ -184,12 +185,34 @@ function submitActions() {
             }
             textFile = window.URL.createObjectURL(data);
             return textFile;
-            };
+        };
 
-            var link = document.getElementById('downloadLink');
-            link.setAttribute("download", participantIDfieldValue + ".txt");
-            link.href = makeTextFile(listText);
-            link.style.display = 'block';
+        var link = document.getElementById('downloadLink');
+        link.setAttribute("download", participantIDfieldValue + ".txt");
+        link.href = makeTextFile(listText);
+        link.style.display = 'block';
+        document.getElementById("submitAction").disabled = "true";
+    }
+    
+    if (!loadedAllVideos) {
+        if(confirm("Submit list of actions and go to next video?")) {
+
+            listText += videoIdAndLength[0] + ", " + videoIdAndLength[1] + ", ";
+
+            if (listData) {
+                for (var i = 0; i < listData.length; i++) {
+                    listText += listData[i].firstChild.data;
+                    if(i != (listData.length-1))
+                        listText += ", ";
+                }
+                listText += "\n";
+            }
+
+            var addedActionsList = document.getElementsByClassName("addedActionsList")[0];
+            while(addedActionsList.firstChild) {
+                addedActionsList.removeChild(addedActionsList.firstChild);
+            }
+            loadNextVideo(videoIds, videoLengths);
         }
     }
 }

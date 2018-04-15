@@ -6,15 +6,14 @@ var player = videojs("player", {
 
 var videoIds = ["apples", "bananas", "cherries", "durians", "mangos"];
 var videoLengths = [1, 2, 3, 4, 5];
+var loadedAllVideos = false;
 
 // Load the first video
 var videoIdAndLength = selectRandomVideo(videoIds, videoLengths);
 var videoPath = videoIdToPath(videoIdAndLength[0], videoIdAndLength[1]);
 player.src(videoPath);
-console.log(logs[videoIdAndLength[0]]);
 var logData = JSON.parse(logs);
 logData = logData[videoIdAndLength[0]];
-console.log(logData);
 var timestamps = Object.keys(logData);
 var timestampIndex = 0;
 
@@ -62,6 +61,15 @@ function selectRandomVideo(videoIds, videoLengths) {
     shuffle(videoLengths);
     var videoId = videoIds.pop();
     var videoLength = videoLengths.pop();
+    
+    if(videoIds.length == 0) {
+        loadedAllVideos = true;
+        var submitActionsButton = document.getElementById("submitAction");
+        submitActionsButton.value = "Submit Actions and Participant ID";
+        var participantIDfield = document.getElementsByClassName("participantIDfield")[0];
+        participantIDfield.style.display = 'block';
+    }
+    
     return [videoId, videoLength];
 }
 
@@ -76,7 +84,7 @@ function loadNextVideo(videoIds, videoLengths) {
             logListElement.removeChild(logListElement.firstChild);
         }
         
-        var videoIdAndLength = selectRandomVideo(videoIds, videoLengths);
+        videoIdAndLength = selectRandomVideo(videoIds, videoLengths);
         var videoPath = videoIdToPath(videoIdAndLength[0], videoIdAndLength[1]);
         player.src(videoPath);
         
