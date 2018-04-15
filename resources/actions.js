@@ -29,8 +29,13 @@ function constructSelect(listOfGameObjects) {
     sentenceSelect.add(defaultOption);
     for (var i = 0; i < listOfGameObjects.length; i++) {
         var option = document.createElement("option");
+        //text
         option.text = listOfGameObjects[i];
         option.value = listOfGameObjects[i];
+        //image
+        option.setAttribute("data-class", "avatar");
+        var imgSrc = "./resources/Sprites/" + listOfGameObjects[i] + ".png";
+        option.setAttribute("data-style", "background-image: url(" + imgSrc + ");");
         sentenceSelect.add(option);
     }    
     return sentenceSelect;
@@ -162,16 +167,7 @@ function submitActions() {
             return;
         }
         
-        listText += videoIdAndLength[0] + ", " + videoIdAndLength[1] + ", ";
-
-            if (listData) {
-                for (var i = 0; i < listData.length; i++) {
-                    listText += listData[i].firstChild.data;
-                    if(i != (listData.length-1))
-                        listText += ", ";
-                }
-                listText += "\n";
-            }
+        appendToListText();
              
         //Should happen only after 5th video
         var textFile = null,
@@ -197,16 +193,7 @@ function submitActions() {
     if (!loadedAllVideos) {
         if(confirm("Submit list of actions and go to next video?")) {
 
-            listText += videoIdAndLength[0] + ", " + videoIdAndLength[1] + ", ";
-
-            if (listData) {
-                for (var i = 0; i < listData.length; i++) {
-                    listText += listData[i].firstChild.data;
-                    if(i != (listData.length-1))
-                        listText += ", ";
-                }
-                listText += "\n";
-            }
+            appendToListText();
 
             var addedActionsList = document.getElementsByClassName("addedActionsList")[0];
             while(addedActionsList.firstChild) {
@@ -214,5 +201,19 @@ function submitActions() {
             }
             loadNextVideo(videoIds, videoLengths);
         }
+    }
+}
+
+function appendToListText() {
+    var listData = document.getElementsByClassName("addedActionText");
+    listText += videoIdAndLength[0] + ", " + videoIdAndLength[1] + ", ";
+
+    if (listData) {
+        for (var i = 0; i < listData.length; i++) {
+            listText += listData[i].firstChild.data;
+            if(i != (listData.length-1))
+                listText += ", ";
+        }
+        listText += "\n";
     }
 }
