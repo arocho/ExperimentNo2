@@ -4,7 +4,17 @@ var player = videojs("player", {
   preload: 'auto'
 });
 
+var videoIds = ["apples", "bananas", "cherries", "durians", "mangos"];
+var videoLengths = [1, 2, 3, 4, 5];
+
+// Load the first video
+var videoIdAndLength = selectRandomVideo(videoIds, videoLengths);
+var videoPath = videoIdToPath(videoIdAndLength[0], videoIdAndLength[1]);
+player.src(videoPath);
+console.log(logs[videoIdAndLength[0]]);
 var logData = JSON.parse(logs);
+logData = logData[videoIdAndLength[0]];
+console.log(logData);
 var timestamps = Object.keys(logData);
 var timestampIndex = 0;
 
@@ -14,6 +24,10 @@ player.on("timeupdate", keepTime);
 
 function keepTime() {
     var currentTimestamp = timestamps[timestampIndex];
+    
+    if (currentTimestamp == undefined)
+        return;
+    
     var inSeconds = convertTimestampToSeconds(currentTimestamp);
     if(player.currentTime() > inSeconds) {
         var actionText = logData[currentTimestamp];
@@ -30,3 +44,48 @@ function convertTimestampToSeconds(timestamp) {
     var seconds = parseInt(timeArray[1]) + parseInt(timeArray[0] * 60);
     return seconds;
 }
+
+function shuffle(array) {
+   var j, x, i;
+   for (i = array.length - 1; i > 0; i--) {
+       j = Math.floor(Math.random() * (i + 1));
+       x = array[i];
+       array[i] = array[j];
+       array[j] = x;
+   }
+   return array;
+}
+
+// returns array of video id, video length
+function selectRandomVideo(videoIds, videoLengths) {
+    shuffle(videoIds);
+    shuffle(videoLengths);
+    var videoId = videoIds.pop();
+    var videoLength = videoLengths.pop();
+    return [videoId, videoLength];
+}
+
+function videoIdToPath(videoId, videoLength) {
+    return "./videos/" + videoId + "/" + videoId + "_" + videoLength + "_mins.mp4";
+}
+
+function loadNextVideo(videoIds, videoLengths) {
+    if(videoIds.length != 0) {
+        var logListElement = document.getElementsByClassName("logList")[0];
+        while(logListElement.firstChild){
+            logListElement.removeChild(logListElement.firstChild);
+        }
+        
+        var videoIdAndLength = selectRandomVideo(videoIds, videoLengths);
+        var videoPath = videoIdToPath(videoIdAndLength[0], videoIdAndLength[1]);
+        player.src(videoPath);
+        
+        logData = JSON.parse(logs);
+        logData = logData[videoIdAndLength[0]];
+        timestamps = Object.keys(logData);
+        timestampIndex = 0;
+    
+        alert("Loaded video " + (5-videoIds.length) + ". Scroll up. Watch. Predict.");
+    }
+}
+

@@ -157,14 +157,17 @@ function submitActions() {
             alert("Please enter a participant ID before submitting.");
             return;
         }
-        var listData = document.getElementsByClassName("addedActionText");
+        var listData = document.getElementsByClassName("addedActionText")[0];
         var listText= "";
         if (listData) {
             for (var i = 0; i < listData.length; i++) {
                 listText += listData[i].firstChild.data + ", ";
             }   
         }
-        console.log(listText);
+        
+        while(listData.firstChild) {
+            listData.removeChild(listData.firstChild);
+        }
         
         loadNextVideo(videoIds, videoLengths);
 
