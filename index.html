@@ -78,6 +78,12 @@
                     el && el.parentNode.removeChild(el);
                 }
             });
+
+            window.onbeforeunload = function(event) {
+              var dialogText = 'Leaving this page will restart the experiment. Are you sure?';
+              event.returnValue = dialogText;
+              return dialogText;
+            };
         </script>
     </body>
 </html>
