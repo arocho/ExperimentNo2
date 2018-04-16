@@ -1,115 +1,84 @@
  <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>Websperiment</title>
-    <script src="./resources/videojs-ie8.min.js"></script>
-</head>
-<link rel="stylesheet" href="stylesheets/style.css">
-<link href="./stylesheets/video-js.min.css" rel="stylesheet">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script type="text/javascript" src="resources/data/game-data.js"></script>
-<script src="resources/data/video-logs-data.js"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script type="text/javascript">
-  $( function() {
-    $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
-      _renderItem: function( ul, item ) {
-        var li = $( "<li>" ),
-          wrapper = $( "<div>", { text: item.label } );
- 
-        if ( item.disabled ) {
-          li.addClass( "ui-state-disabled" );
-        }
- 
-        $( "<span>", {
-          style: item.element.attr( "data-style" ),
-          "class": "ui-icon " + item.element.attr( "data-class" )
-        })
-          .appendTo( wrapper );
- 
-        return li.append( wrapper ).appendTo( ul );
-      }
-    });
- 
-    $( ".listOfGameObjects" )
-      .iconselectmenu()
-      .iconselectmenu( "menuWidget")
-        .addClass( "ui-menu-icons avatar" );
-  } );
-</script>
-<body onload="loadData()">
- <div class="headerDiv">
-    <h3>Welcome</h3>
-    <p>Please make sure you have completed both the consent form and the demographic survey handed to you by the Principal Investigator.</p>
-     <h3>Instructions</h3>
-    <ol>
-        <li>
-            The video you will watch was recorded from another person’s gameplay.
-        </li>
-        <li>
-            The game they played is the same game you have just played.
-        </li>
-        <li>
-            A log of the player’s actions is populated in an abbreviated format.
-        </li>
-     </ol>
- </div>
-    
- <div class="videoDiv">
-    <video id="player" class="video-js" width="640" height="480"></video>
-    <ul class="logList">
-    </ul>
- </div>
- <div class="actionsDiv">
-     <h3>What happens next?</h3>
-     <p>Using the buttons below, please try to predict what the player will do next.
-         Continue to add actions until you are no longer sure what will happen.</p>
-     <p>Submit your Predicted Actions when you are done.</p>
- </div>
-    
- <table>
-     <tr>
-         <td><input class="actionButton" placeholder="select entity" onclick="gatherSentenceParts('Open')" type="button" value="Open"></td>
-         <td><input class="actionButton" onclick="gatherSentenceParts('Pickup')" type="button" value="Pickup"></td>
-         <td><input class="actionButton" onclick="gatherSentenceParts('Drop')" type="button" value="Drop"></td>
-     </tr>
-     <tr>
-         <td><input class="actionButton" onclick="gatherSentenceParts('Close')" type="button" value="Close"></td>
-         <td><input class="actionButton" onclick="gatherSentenceParts('Look at')" type="button" value="Look at"></td>
-         <td><input class="actionButton" onclick="gatherSentenceParts('Go to')" type="button" value="Go to"></td>
-     </tr>
-     <tr>
-         <td><input class="actionButton" onclick="gatherSentenceParts('Give')" type="button" value="Give"></td>
-         <td><input class="actionButton" onclick="gatherSentenceParts('Talk to')" type="button" value="Talk to"></td>
-         <td><input class="actionButton" onclick="gatherSentenceParts('Use')" type="button" value="Use"></td>
-     </tr>
- </table> 
- <span class="sentenceContainer"></span>
- <input class="addActionButton" type="button" value="Add Action" onclick="addAction()">
- <h4>Predicted Actions: (Drag to reorder, click to delete)</h4>
- <ul id="editable" class="addedActionsList">
- </ul>
+    <head>
+        <meta charset="UTF-8">
+        <title>Websperiment</title>
+        <link rel="stylesheet" href="stylesheets/style.css">
+        <link href="./stylesheets/video-js.min.css" rel="stylesheet">
+        <script src="./resources/videojs-ie8.min.js"></script>
+        <script type="text/javascript" src="resources/data/game-data.js"></script>
+        <script src="resources/data/video-logs-data.js"></script>
+    </head>
 
-<input style="display: none" class="participantIDfield" type="text" placeholder="Participant ID">
-<input id="submitAction" type="submit" value="Submit Actions and Load Next Video" onclick="submitActions()">
-<a id="downloadLink" style="display: none"> Download</a>
-    <!--Link Video.js and Sortable libraries-->
-  <script src="http://vjs.zencdn.net/6.6.3/video.js"></script>
-  <script src="resources/video-logger.js"></script>
-  <script src="resources/experiment-control.js"></script>
-  <script src="resources/actions.js"></script>
-  <script src="resources/Sortable.min.js"></script>
-  <script type="text/javascript">
-    var editable = document.getElementById("editable");
-    var editableList = Sortable.create(editable, {
-        filter: '.js-remove',
-        onFilter: function (evt) {
-            var el = editableList.closest(evt.item); // get dragged item
-            el && el.parentNode.removeChild(el);
-        }
-    });
-  </script>
-</body>
+    <body onload="loadData()">
+        <div class="headerDiv">
+            <h3>Welcome</h3>
+            <p>Please make sure you have completed both the consent form and the demographic survey handed to you by the Principal Investigator.</p>
+            <h3>Instructions</h3>
+            <ol>
+                <li>The video you will watch was recorded from another person’s gameplay.</li>
+                <li>The game they played is the same game you have just played.</li>
+                <li>A log of the player’s actions is populated in an abbreviated format.</li>
+            </ol>
+        </div>
+
+        <div class="videoDiv">
+            <video id="player" class="video-js" width="640" height="480"></video>
+            <ul class="logList">
+            </ul>
+        </div>
+
+        <div class="actionsDiv">
+            <h3>What happens next?</h3>
+            <p>Using the buttons below, please try to predict what the player will do next.
+            Continue to add actions until you are no longer sure what will happen.</p>
+            <p>Submit your Predicted Actions when you are done.</p>
+        </div>
+
+        <table>
+            <tr>
+                <td><input class="actionButton" placeholder="select entity" onclick="gatherSentenceParts('Open')" type="button" value="Open"></td>
+                <td><input class="actionButton" onclick="gatherSentenceParts('Pickup')" type="button" value="Pickup"></td>
+                <td><input class="actionButton" onclick="gatherSentenceParts('Drop')" type="button" value="Drop"></td>
+            </tr>
+            <tr>
+                <td><input class="actionButton" onclick="gatherSentenceParts('Close')" type="button" value="Close"></td>
+                <td><input class="actionButton" onclick="gatherSentenceParts('Look at')" type="button" value="Look at"></td>
+                <td><input class="actionButton" onclick="gatherSentenceParts('Go to')" type="button" value="Go to"></td>
+            </tr>
+            <tr>
+                <td><input class="actionButton" onclick="gatherSentenceParts('Give')" type="button" value="Give"></td>
+                <td><input class="actionButton" onclick="gatherSentenceParts('Talk to')" type="button" value="Talk to"></td>
+                <td><input class="actionButton" onclick="gatherSentenceParts('Use')" type="button" value="Use"></td>
+            </tr>
+        </table>
+
+        <span class="sentenceContainer"></span>
+        <input class="addActionButton" type="button" value="Add Action" onclick="addAction()">
+
+        <h4>Predicted Actions: (Drag to reorder, click to delete)</h4>
+        <ul id="editable" class="addedActionsList">
+        </ul>
+
+        <input style="display: none" class="participantIDfield" type="text" placeholder="Participant ID">
+        <input id="submitAction" type="submit" value="Submit Actions and Load Next Video" onclick="submitActions()">
+        <a id="downloadLink" style="display: none"> Download</a>
+
+        <!--Link Video.js and Sortable libraries-->
+        <script src="http://vjs.zencdn.net/6.6.3/video.js"></script>
+        <script src="resources/video-logger.js"></script>
+        <script src="resources/experiment-control.js"></script>
+        <script src="resources/actions.js"></script>
+        <script src="resources/Sortable.min.js"></script>
+        <script type="text/javascript">
+            var editable = document.getElementById("editable");
+            var editableList = Sortable.create(editable, {
+                filter: '.js-remove',
+                onFilter: function (evt) {
+                    var el = editableList.closest(evt.item); // get dragged item
+                    el && el.parentNode.removeChild(el);
+                }
+            });
+        </script>
+    </body>
 </html>

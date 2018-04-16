@@ -87,9 +87,4 @@ i {
 .timestamp {
     padding-right: 15px;
 }
-
-/* select with CSS avatar icons */
-option.avatar {
-    background-repeat: no-repeat !important;
-    padding-left: 20px;
-}
+ 
