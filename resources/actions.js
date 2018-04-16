@@ -34,11 +34,10 @@ function constructSelect(listOfGameObjects) {
         option.text = listOfGameObjects[i];
         option.value = listOfGameObjects[i];
         //image
-        option.setAttribute("data-class", "avatar");
         var imgSrc = "./resources/Sprites/" + listOfGameObjects[i] + ".png";
-        option.setAttribute("data-style", "background-image: url(" + imgSrc + ");");
+        option.setAttribute("data-img-src", imgSrc);
         sentenceSelect.add(option);
-    }    
+    }
     return sentenceSelect;
 }
 
